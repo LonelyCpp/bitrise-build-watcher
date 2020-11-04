@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const parseArgs = require("minimist");
 const BitriseApi = require("./BitriseApi");
 const util = require("./util");

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const main = require("./src/main");
 
 const args = process.argv.slice(2);

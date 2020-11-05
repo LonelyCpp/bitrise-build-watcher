@@ -51,12 +51,12 @@ async function main(cliArgs) {
     await util.sleep(interval);
   }
 
+  const log = await api.getBuildLog(buildSlug);
+  console.log(log);
+
   if (buildStatus.status_text !== "success") {
     throw buildStatus.status;
   }
-
-  const log = await api.getBuildLog(buildSlug);
-  console.log(log);
 }
 
 module.exports = main;

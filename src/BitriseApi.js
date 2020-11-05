@@ -43,6 +43,17 @@ class BitriseApi {
     );
     return await res.json();
   };
+
+  getBuildLog = async (buildSlug) => {
+    const res = await fetch(
+      `https://api.bitrise.io/v0.1/apps/${this.appSlug}/builds/${buildSlug}/log`,
+      { headers: this.authHeader }
+    );
+    const data = await res.json();
+
+    const logRes = await fetch(data.expiring_raw_log_url);
+    return logRes.text();
+  };
 }
 
 module.exports = BitriseApi;

@@ -8,10 +8,11 @@ async function main(cliArgs) {
   const apiKey = args.k || args.apiKey;
   const appSlug = args.s || args.appSlug;
   const workflow = args.w || args.workflow;
+  const branchName = args.b || args.branch;
   const commitHash = args.c || args.commitHash;
   const interval = args.i || args.interval || 60000;
 
-  if (!commitHash || !apiKey || !appSlug || !workflow) {
+  if (!commitHash || !apiKey || !appSlug || !workflow || !branchName) {
     console.log("missing required keys", args);
     throw "missing required keys";
   }
@@ -22,7 +23,7 @@ async function main(cliArgs) {
   console.log(`triggering job on project ${accInfo.data.title}`);
   console.log("-----------------------------------------------");
 
-  const buildData = await api.triggerBuild(commitHash, workflow);
+  const buildData = await api.triggerBuild(commitHash, branchName, workflow);
   const buildUrl = buildData.build_url;
   const buildSlug = buildData.build_slug;
 

@@ -14,12 +14,13 @@ class BitriseApi {
     return await res.json();
   };
 
-  triggerBuild = async (commitHash, workflow) => {
+  triggerBuild = async (commitHash, branchName, workflow) => {
     const body = {
       hook_info: {
         type: "bitrise",
       },
       build_params: {
+        branch: branchName,
         workflow_id: workflow,
         commit_hash: commitHash,
       },

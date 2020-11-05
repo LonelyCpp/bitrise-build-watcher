@@ -11,8 +11,14 @@ I use it to trigger builds from my gitlab pipelines and poll for the build statu
 
 ### CLI
 
-- `-k` or `--apiKey` - bitrise API key
-- `-s` or `--appSlug` - bitrise app slug
-- `-w` or `--workflow`- bitrise workflow to trigger
-- `-c` or `--commitHash` - run build on this commit hash
-- `-i` or `--interval` - [optional] poll interval (default 1 minute)
+`npx github:LonelyCpp/bitrise-build-watcher`
+
+**options**
+
+| option                 | required | description                      |
+| ---------------------- | -------- | -------------------------------- |
+| `-k` or `--apiKey`     | yes      | bitrise API key                  |
+| `-s` or `--appSlug`    | yes      | bitrise app slug                 |
+| `-w` or `--workflow`   | yes      | bitrise workflow to trigger      |
+| `-c` or `--commitHash` | yes      | run build on this commit hash    |
+| `-i` or `--interval`   | no       | poll interval (default 1 minute) |

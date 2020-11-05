@@ -21,25 +21,27 @@ async function main(cliArgs) {
   console.log(`triggering job on project ${accInfo.data.title}`);
   console.log("-----------------------------------------------");
 
-  const jobData = await api.triggerBuild(commitHash, workflow);
+  const buildData = await api.triggerBuild(commitHash, workflow);
+  const buildUrl = buildData.build_url;
+  const buildSlug = buildData.build_slug;
 
-  console.log(`job created at : ${jobData.build_url}`);
+  console.log(`job created at : ${buildUrl}`);
 
-  let jobStatus;
+  let buildStatus;
 
   while (true) {
-    jobStatus = await api.getBuildStatus(jobData.build_slug);
-    jobStatus = jobStatus.data;
+    buildStatus = await api.getBuildStatus(buildSlug);
+    buildStatus = buildStatus.data;
 
-    const finishedAt = jobStatus.finished_at;
-    const statusText = jobStatus.status_text;
+    const finishedAt = buildStatus.finished_at;
+    const statusText = buildStatus.status_text;
     const now = new Date().toISOString();
 
     console.log(`${now} : ${statusText}`);
 
     if (finishedAt) {
       console.log(
-        `job finished at ${finishedAt} with status code ${jobStatus.status}`
+        `job finished at ${finishedAt} with status code ${buildStatus.status}`
       );
       break;
     }
@@ -47,9 +49,12 @@ async function main(cliArgs) {
     await util.sleep(interval);
   }
 
-  if (jobStatus.status_text !== "success") {
-    throw jobStatus.status;
+  if (buildStatus.status_text !== "success") {
+    throw buildStatus.status;
   }
+
+  const log = await api.getBuildLog(buildSlug);
+  console.log(log);
 }
 
 module.exports = main;

@@ -12,7 +12,8 @@ async function main(cliArgs) {
   const interval = args.i || args.interval || 60000;
 
   if (!commitHash || !apiKey || !appSlug || !workflow) {
-    process.exit(1);
+    console.log("missing required keys", args);
+    throw "missing required keys";
   }
 
   const api = new BitriseApi(apiKey, appSlug);

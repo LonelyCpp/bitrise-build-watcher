@@ -35,15 +35,16 @@ async function main(cliArgs) {
     buildStatus = await api.getBuildStatus(buildSlug);
     buildStatus = buildStatus.data;
 
+    const statusCode = buildStatus.status;
     const finishedAt = buildStatus.finished_at;
     const statusText = buildStatus.status_text;
     const now = new Date().toISOString();
 
-    console.log(`${now} : ${statusText}`);
+    console.log(`${now} : ${statusText} : ${statusCode}`);
 
     if (finishedAt) {
       console.log(
-        `job finished at ${finishedAt} with status code ${buildStatus.status}`
+        `job finished at ${finishedAt} with status code ${statusCode}`
       );
       break;
     }
@@ -51,8 +52,12 @@ async function main(cliArgs) {
     await util.sleep(interval);
   }
 
-  const log = await api.getBuildLog(buildSlug);
-  console.log(log);
+  try {
+    const log = await api.getBuildLog(buildSlug);
+    console.log(log);
+  } catch (error) {
+    console.log("could not fetch build log");
+  }
 
   if (buildStatus.status_text !== "success") {
     throw buildStatus.status;

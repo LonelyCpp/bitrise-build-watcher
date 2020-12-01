@@ -1,4 +1,8 @@
+const fs = require("fs");
 const fetch = require("node-fetch");
+const { downloadFile } = require("./util");
+
+const ARTIFACTS_PATH_DEFAULT = "./build_artifacts";
 
 class BitriseApi {
   constructor(apiKey, appSlug) {
@@ -54,6 +58,35 @@ class BitriseApi {
 
     const logRes = await fetch(data.expiring_raw_log_url);
     return logRes.text();
+  };
+
+  getArtifactList = async (buildSlug) => {
+    const res = await fetch(
+      `https://api.bitrise.io/v0.1/apps/${this.appSlug}/builds/${buildSlug}/artifacts`,
+      { headers: this.authHeader }
+    );
+    const data = await res.json();
+    return data.data;
+  };
+
+  downloadArtifact = async (buildSlug, artifactSlug, folderPath) => {
+    const res = await fetch(
+      `https://api.bitrise.io/v0.1/apps/${this.appSlug}/builds/${buildSlug}/artifacts/${artifactSlug}`,
+      { headers: this.authHeader }
+    );
+    const data = await res.json();
+
+    const name = data.data.title;
+    const downloadUrl = data.data.expiring_download_url;
+
+    const folder = folderPath || ARTIFACTS_PATH_DEFAULT;
+    const filePath = `${ARTIFACTS_PATH_DEFAULT}/${name}`;
+
+    if (!fs.existsSync(folder)) {
+      fs.mkdirSync(folder);
+    }
+
+    await downloadFile(downloadUrl, filePath);
   };
 }
 

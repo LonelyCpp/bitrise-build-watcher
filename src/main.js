@@ -11,6 +11,7 @@ async function main(cliArgs) {
   const branchName = args.b || args.branch;
   const commitHash = args.c || args.commitHash;
   const interval = args.i || args.interval || 60000;
+  const artifactFolder = args.a || args.artifactFolder;
 
   if (!commitHash || !apiKey || !appSlug || !workflow || !branchName) {
     console.log("missing required keys", args);
@@ -57,6 +58,23 @@ async function main(cliArgs) {
     console.log(log);
   } catch (error) {
     console.log("could not fetch build log");
+  }
+
+  try {
+    console.log("downloading artifacts");
+    const artifacts = await api.getArtifactList(buildSlug);
+    for (let i = 0; i < artifacts.length; i++) {
+      const item = artifacts[i];
+      console.log("downloading", item.title);
+
+      try {
+        await api.downloadArtifact(buildSlug, item.slug, artifactFolder);
+      } catch (error) {
+        console.log("could not fetch build artifact : ", item);
+      }
+    }
+  } catch (error) {
+    console.log("could not fetch build artifacts");
   }
 
   if (buildStatus.status_text !== "success") {

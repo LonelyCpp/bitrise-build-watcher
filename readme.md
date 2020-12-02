@@ -15,10 +15,12 @@ I use it to trigger builds from my gitlab pipelines and poll for the build statu
 
 **options**
 
-| option                 | required | description                      |
-| ---------------------- | -------- | -------------------------------- |
-| `-k` or `--apiKey`     | yes      | bitrise API key                  |
-| `-s` or `--appSlug`    | yes      | bitrise app slug                 |
-| `-w` or `--workflow`   | yes      | bitrise workflow to trigger      |
-| `-c` or `--commitHash` | yes      | run build on this commit hash    |
-| `-i` or `--interval`   | no       | poll interval (default 1 minute) |
+| option                     | required | description                       |
+| -------------------------- | -------- | --------------------------------- |
+| `-k` or `--apiKey`         | yes      | bitrise API key                   |
+| `-s` or `--appSlug`        | yes      | bitrise app slug                  |
+| `-w` or `--workflow`       | yes      | bitrise workflow to trigger       |
+| `-c` or `--commitHash`     | yes      | run build on this commit hash     |
+| `-i` or `--interval`       | no       | poll interval (default 1 minute)  |
+| `-a` or `--artifactFolder` | no       | folder to download artifacts      |
+| `--noPoll`                 | no       | does not poll(trigger and finish) |

@@ -5,6 +5,7 @@ const util = require("./util");
 async function main(cliArgs) {
   const args = parseArgs(cliArgs);
 
+  const noPoll = args.noPoll;
   const apiKey = args.k || args.apiKey;
   const appSlug = args.s || args.appSlug;
   const workflow = args.w || args.workflow;
@@ -29,6 +30,10 @@ async function main(cliArgs) {
   const buildSlug = buildData.build_slug;
 
   console.log(`job created at : ${buildUrl}`);
+
+  if (noPoll) {
+    return;
+  }
 
   let buildStatus;
 
